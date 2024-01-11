@@ -22,6 +22,7 @@ struct ItemPage {
     new Item('MateBookProX', $r('app.media.mateBookProX'), 13999),
     new Item('WatchGT4', $r('app.media.watchGT4'), 1438),
     new Item('FreeBuds Pro3', $r('app.media.freeBudsPro3'), 1499),
+    new Item('FreeBuds Pro3', $r('app.media.freeBudsPro3'), 1499),
     new Item('Mate X5', $r('app.media.mateX5'), 12999)
   ]
 
@@ -33,48 +34,58 @@ struct ItemPage {
           .fontWeight(FontWeight.Bold)
       }
       .width('100%')
+      .height(30)
       .margin({ bottom: 20 })
 
-      ForEach(
-        this.items,
-        (item: Item) => {
-          Row({ space: 10 }) {
-            Image(item.image)
-              .width(100)
-            Column({ space: 4 }) {
-              if (item.discount) { //条件控制：有折扣
-                Text(item.name)
-                  .fontSize(20)
-                  .fontWeight(FontWeight.Bold)
-                Text('原价：￥ ' + item.price)
-                  .fontColor('#CCC')
-                  .fontSize(14)
-                  .decoration({type: TextDecorationType.LineThrough})  //中划线
-                Text('折扣价：￥ ' + (item.price - item.discount))
-                  .fontColor('#F36')
-                  .fontSize(18)
-                Text('补贴：￥ ' + item.discount)
-                  .fontColor('#F36')
-                  .fontSize(18)
-              } else {
-                Text(item.name)
-                  .fontSize(20)
-                  .fontWeight(FontWeight.Bold)
-                Text('￥ ' + item.price)
-                  .fontColor('#CCC')
-                  .fontSize(14)
-              }
+      /**
+       * 列表
+       */
+      List({space:8}) {  //每行间距
+        ForEach(
+          this.items,
+          (item: Item) => {
+            ListItem() {   //ListItem
+              Row({ space: 10 }) {
+                Image(item.image)
+                  .width(100)
+                Column({ space: 4 }) {
+                  if (item.discount) { //条件控制：有折扣
+                    Text(item.name)
+                      .fontSize(20)
+                      .fontWeight(FontWeight.Bold)
+                    Text('原价：￥ ' + item.price)
+                      .fontColor('#CCC')
+                      .fontSize(14)
+                      .decoration({type: TextDecorationType.LineThrough})  //中划线
+                    Text('折扣价：￥ ' + (item.price - item.discount))
+                      .fontColor('#F36')
+                      .fontSize(18)
+                    Text('补贴：￥ ' + item.discount)
+                      .fontColor('#F36')
+                      .fontSize(18)
+                  } else {
+                    Text(item.name)
+                      .fontSize(20)
+                      .fontWeight(FontWeight.Bold)
+                    Text('￥ ' + item.price)
+                      .fontColor('#CCC')
+                      .fontSize(14)
+                  }
+                }
+                .height('100%')
+                .alignItems(HorizontalAlign.Start)
+              }  //*List里面只能有一个根组件，所以需要用Row包装一下
             }
-            .height('100%')
-            .alignItems(HorizontalAlign.Start)
+            .width('100%')
+            .backgroundColor('#FFF')
+            .borderRadius(20)
+            .height(120)
+            .padding(10)
           }
-          .width('100%')
-          .backgroundColor('#FFF')
-          .borderRadius(20)
-          .height(120)
-          .padding(10)
-        }
-      )
+        )
+      }
+      .width('100%')
+      .layoutWeight(1)   //按权重设置高度: 因为这里只有List设置了1，它就占剩余高度; 如果也有其他控件设置了1，则平分高度
     }
     .width('100%')
     .height('100%')
