@@ -12,6 +12,9 @@ class Item {
   }
 }
 
+//导入Header, ../ 表示上一级目录
+import {Header} from '../componts/CommonComponts'
+
 @Entry
 @Component
 struct ItemPage {
@@ -28,14 +31,9 @@ struct ItemPage {
 
   build() {
     Column({ space: 8 }) {
-      Row() {
-        Text('商品列表')
-          .fontSize(30)
-          .fontWeight(FontWeight.Bold)
-      }
-      .width('100%')
-      .height(30)
-      .margin({ bottom: 20 })
+      Header({title: '商品列表'})  //title传参
+        .margin({ bottom: 20 })   //对自定义组件加外边距
+        .backgroundColor('#FDF')
 
       /**
        * 列表
@@ -45,7 +43,7 @@ struct ItemPage {
           this.items,
           (item: Item) => {
             ListItem() {   //ListItem
-              Row({ space: 10 }) {
+              Row({ space: 10 }) {   //*ListItem里面只能有一个根组件，所以需要用Row包装一下
                 Image(item.image)
                   .width(100)
                 Column({ space: 4 }) {
@@ -74,13 +72,13 @@ struct ItemPage {
                 }
                 .height('100%')
                 .alignItems(HorizontalAlign.Start)
-              }  //*List里面只能有一个根组件，所以需要用Row包装一下
+              }
+              .width('100%')
+              .backgroundColor('#FFF')
+              .borderRadius(20)
+              .height(120)
+              .padding(10)
             }
-            .width('100%')
-            .backgroundColor('#FFF')
-            .borderRadius(20)
-            .height(120)
-            .padding(10)
           }
         )
       }
