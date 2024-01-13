@@ -15,6 +15,45 @@ class Item {
 //导入Header, ../ 表示上一级目录
 import {Header} from '../componts/CommonComponts'
 
+//全局自定义构建函数
+// @Builder function ItemCard(item: Item) {
+//   Row({ space: 10 }) {   //*ListItem里面只能有一个根组件，所以需要用Row包装一下
+//     Image(item.image)
+//       .width(100)
+//     Column({ space: 4 }) {
+//       if (item.discount) { //条件控制：有折扣
+//         Text(item.name)
+//           .fontSize(20)
+//           .fontWeight(FontWeight.Bold)
+//         Text('原价：￥ ' + item.price)
+//           .fontColor('#CCC')
+//           .fontSize(14)
+//           .decoration({type: TextDecorationType.LineThrough})  //中划线
+//         Text('折扣价：￥ ' + (item.price - item.discount))
+//           .fontColor('#F36')
+//           .fontSize(18)
+//         Text('补贴：￥ ' + item.discount)
+//           .fontColor('#F36')
+//           .fontSize(18)
+//       } else {
+//         Text(item.name)
+//           .fontSize(20)
+//           .fontWeight(FontWeight.Bold)
+//         Text('￥ ' + item.price)
+//           .fontColor('#CCC')
+//           .fontSize(14)
+//       }
+//     }
+//     .height('100%')
+//     .alignItems(HorizontalAlign.Start)
+//   }
+//   .width('100%')
+//   .backgroundColor('#FFF')
+//   .borderRadius(20)
+//   .height(120)
+//   .padding(10)
+// }
+
 @Entry
 @Component
 struct ItemPage {
@@ -43,41 +82,7 @@ struct ItemPage {
           this.items,
           (item: Item) => {
             ListItem() {   //ListItem
-              Row({ space: 10 }) {   //*ListItem里面只能有一个根组件，所以需要用Row包装一下
-                Image(item.image)
-                  .width(100)
-                Column({ space: 4 }) {
-                  if (item.discount) { //条件控制：有折扣
-                    Text(item.name)
-                      .fontSize(20)
-                      .fontWeight(FontWeight.Bold)
-                    Text('原价：￥ ' + item.price)
-                      .fontColor('#CCC')
-                      .fontSize(14)
-                      .decoration({type: TextDecorationType.LineThrough})  //中划线
-                    Text('折扣价：￥ ' + (item.price - item.discount))
-                      .fontColor('#F36')
-                      .fontSize(18)
-                    Text('补贴：￥ ' + item.discount)
-                      .fontColor('#F36')
-                      .fontSize(18)
-                  } else {
-                    Text(item.name)
-                      .fontSize(20)
-                      .fontWeight(FontWeight.Bold)
-                    Text('￥ ' + item.price)
-                      .fontColor('#CCC')
-                      .fontSize(14)
-                  }
-                }
-                .height('100%')
-                .alignItems(HorizontalAlign.Start)
-              }
-              .width('100%')
-              .backgroundColor('#FFF')
-              .borderRadius(20)
-              .height(120)
-              .padding(10)
+              this.ItemCard(item)
             }
           }
         )
@@ -89,5 +94,44 @@ struct ItemPage {
     .height('100%')
     .backgroundColor('#EFEFEF')
     .padding(20)
+  }
+
+  //局部自定义构建函数
+  @Builder ItemCard(item: Item) {
+    Row({ space: 10 }) {   //*ListItem里面只能有一个根组件，所以需要用Row包装一下
+      Image(item.image)
+        .width(100)
+      Column({ space: 4 }) {
+        if (item.discount) { //条件控制：有折扣
+          Text(item.name)
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+          Text('原价：￥ ' + item.price)
+            .fontColor('#CCC')
+            .fontSize(14)
+            .decoration({type: TextDecorationType.LineThrough})  //中划线
+          Text('折扣价：￥ ' + (item.price - item.discount))
+            .fontColor('#F36')
+            .fontSize(18)
+          Text('补贴：￥ ' + item.discount)
+            .fontColor('#F36')
+            .fontSize(18)
+        } else {
+          Text(item.name)
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+          Text('￥ ' + item.price)
+            .fontColor('#CCC')
+            .fontSize(14)
+        }
+      }
+      .height('100%')
+      .alignItems(HorizontalAlign.Start)
+    }
+    .width('100%')
+    .backgroundColor('#FFF')
+    .borderRadius(20)
+    .height(120)
+    .padding(10)
   }
 }
