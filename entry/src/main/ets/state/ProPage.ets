@@ -31,15 +31,21 @@ struct ProPage {   //父组件
   // //已完成任务数量
   // @State finishTask: number = 0
   //统计信息
-  @State statInfo: StatInfo = new StatInfo()
+  @Provide statInfo: StatInfo = new StatInfo()
 
   build() {
     Column({ space: 10 }) {
       // 1.任务进度卡片
-      TaskStatistics({totalTask: this.statInfo.totalTask, finishTask: this.statInfo.finishTask})
+      // TaskStatistics({totalTask: this.statInfo.totalTask, finishTask: this.statInfo.finishTask})
+
+      //使用Consume
+      TaskStatistics()
 
       // 2.新增任务按钮
-      TaskList({statInfo: $statInfo})  //$totalTask表示传递的是totalTask的引用
+      // TaskList({statInfo: $statInfo})  //$totalTask表示传递的是totalTask的引用
+
+      //使用Consume
+      TaskList()   //@Consume不需要传参，内部自动传
     }
     .width('100%')
     .height('100%')
@@ -50,12 +56,14 @@ struct ProPage {   //父组件
 
 @Component
 struct TaskStatistics {    //子组件
-  //总任务数量
-  @Prop totalTask: number   //子组件只能定义成StatInfo里面的变量
-  //已完成任务数量
-  @Prop finishTask: number
+  // //总任务数量
+  // @Prop totalTask: number   //子组件只能定义成StatInfo里面的变量
+  // //已完成任务数量
+  // @Prop finishTask: number
 
   // @Prop statInfo: StatInfo    //@Prop不可以传递对象
+
+  @Consume statInfo: StatInfo
 
   build() {
     Row() {
@@ -65,16 +73,16 @@ struct TaskStatistics {    //子组件
 
       Stack() { //堆叠容器, 详见右侧API Reference
         Progress({
-          value: this.finishTask,
-          total: this.totalTask,
+          value: this.statInfo.finishTask,
+          total: this.statInfo.totalTask,
           type: ProgressType.Ring //环形
         })
           .width(100)
         Row() {
-          Text(this.finishTask.toString())
+          Text(this.statInfo.finishTask.toString())
             .fontSize(24)
             .fontColor('#36D')
-          Text(' / ' + this.totalTask.toString())
+          Text(' / ' + this.statInfo.totalTask.toString())
             .fontSize(24)
         }
       }
@@ -92,7 +100,10 @@ struct TaskList {
   // //已完成任务数量
   // @Link finishTask: number
 
-  @Link statInfo: StatInfo    //@Link可以传递对象
+  // @Link statInfo: StatInfo    //@Link可以传递对象
+
+  @Consume statInfo: StatInfo
+
   //任务数组
   @State tasks: Task[] = []
 
