@@ -61,7 +61,7 @@ struct StatePage2 {
                 })
               Button('删除')
                 .onClick(() => {
-                  this.gfs.splice(index, 1)  //splice为删除，count=1标识删除一个元素
+                  this.gfs.splice(index, 1)  //splice为删除，index为从哪个下标开始删，count=1表示删除一个元素
                 })
             }
             .width('100%')
