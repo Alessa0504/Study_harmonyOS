@@ -1,4 +1,5 @@
 //任务类
+@Observed
 class Task {
   static id: number = 1 //static表示无论创建多少个Task对象，共享这个变量
   // 任务名称
@@ -14,6 +15,12 @@ class Task {
   .backgroundColor(Color.White)
   .borderRadius(15)
   .shadow({ radius: 6, color: '#1F000000', offsetX: 2, offsetY: 4 })
+}
+
+// 任务完成样式
+@Extend(Text) function finishedTask(){
+  .decoration({type:TextDecorationType.LineThrough})
+  .fontColor('#B1B2B1')
 }
 
 class StatInfo {
@@ -122,22 +129,9 @@ struct TaskList {
       List({space: 10}) {
         ForEach(
           this.tasks,
-          (item: Task, index?: number) => {
+          (item: Task, index?: number) => {   //this.tasks数组中的每个元素item是Task(对象)类型
             ListItem() {
-              Row() {
-                Text(item.name)
-                  .fontSize(20)
-                Checkbox()
-                  .select(item.finished)
-                  .onChange((value: boolean) => {
-                    // 1.更新当前任务状态
-                    item.finished = value
-                    // 2.更新已完成任务数量
-                    this.handlerTaskChange()
-                  })
-              }
-              .card()   //卡片效果
-              .justifyContent(FlexAlign.SpaceBetween)
+              TaskItem({ item: item, onTaskChange: this.handlerTaskChange.bind(this)})  //函数传递, bind(this)绑定这里(即父组件)的this，避免传到子组件TaskItem后this变为TaskItem
             }
             .swipeAction({end: this.DeleteButton(index)})
           }
@@ -174,5 +168,36 @@ struct TaskList {
       this.tasks.splice(index, 1)
       this.handlerTaskChange()
     })
+  }
+}
+
+@Component
+struct TaskItem {
+  @ObjectLink item: Task
+  //方法传递
+  onTaskChange: () => void   //函数类型
+
+  build() {
+    Row() {
+      if(this.item.finished) {
+        Text(this.item.name)
+          .fontSize(20)
+          .finishedTask()
+      } else {
+        Text(this.item.name)
+          .fontSize(20)
+      }
+      Checkbox()
+        .select(this.item.finished)
+        .onChange((value: boolean) => {
+          // 1.更新当前任务状态
+          this.item.finished = value
+          // 2.更新已完成任务数量
+          // this.handlerTaskChange()
+          this.onTaskChange()   //这的this是TaskItem的！
+        })
+    }
+    .card()   //卡片效果
+    .justifyContent(FlexAlign.SpaceBetween)
   }
 }
