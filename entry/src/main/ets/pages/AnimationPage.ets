@@ -29,7 +29,14 @@ struct AnimationPage {
           // 开始按钮
           Button('开始游戏')
             .onClick(() => {
-               this.isBegin = true
+              //转场动画需要把显示的动作放入animateTo中
+              animateTo(
+                {duration: 1000},
+                () => {
+                  //点击后显示小鱼
+                  this.isBegin = true
+                }
+              )
             })
         } else {
           // 小鱼图片
@@ -38,11 +45,16 @@ struct AnimationPage {
             .rotate({angle:this.angle, centerX:'50%', centerY: '50%'})
             .width(40)
             .height(40)
-            // .animation({duration: 500})
-
-          // 操作按钮
-          Row() {
-            Button('<-').backgroundColor('#20101010')
+            // .animation({duration: 500})   //属性动画
+          .transition({    //转场动画，这里只考虑入场
+              type: TransitionType.Insert,
+              opacity:0,   //透明度。0:透明，看不见
+              translate: {x: -250}   //小鱼起点在屏幕外
+          })
+        }
+        // 操作按钮
+        Row() {
+          Button('<-').backgroundColor('#20101010')
             .onClick(()=> {
               // this.fishX -= 20
               // this.src = $r('app.media.fish_rev')
@@ -51,35 +63,36 @@ struct AnimationPage {
                 this.src = $r('app.media.fish_rev')
               })
             })
-            Column({space: 40}) {
-              Button('↑').backgroundColor('#20101010')
-                .onClick(() => {
-                  // this.fishY -= 20
-                  animateTo({duration:500}, () => {
-                    this.fishY -= 20
-                  })
-                })
-              Button('↓').backgroundColor('#20101010')
-                .onClick(() => {
-                  // this.fishY += 20
-                  animateTo({duration:500}, () => {
-                    this.fishY += 20
-                  })
-                })
-            }
-            Button('→').backgroundColor('#20101010')
+          Column({space: 40}) {
+            Button('↑').backgroundColor('#20101010')
               .onClick(() => {
-                // this.fishX += 20
-                // this.src = $r('app.media.fish')
+                // this.fishY -= 20
                 animateTo({duration:500}, () => {
-                  this.fishX += 20
-                  this.src = $r('app.media.fish')
+                  this.fishY -= 20
+                })
+              })
+            Button('↓').backgroundColor('#20101010')
+              .onClick(() => {
+                // this.fishY += 20
+                animateTo({duration:500}, () => {
+                  this.fishY += 20
                 })
               })
           }
-          .height(240)
-          .width(240)
+          Button('→').backgroundColor('#20101010')
+            .onClick(() => {
+              // this.fishX += 20
+              // this.src = $r('app.media.fish')
+              animateTo({duration:500}, () => {
+                this.fishX += 20
+                this.src = $r('app.media.fish')
+              })
+            })
         }
+        .height(240)
+        .width(240)
+        .justifyContent(FlexAlign.Center)  //主轴居中对齐
+        .position({x: 0, y: 120})  //主轴左上角位置
       }
       .width('100%').height('100%')
     }
