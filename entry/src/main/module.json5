@@ -1,35 +1,35 @@
 {
   "module": {
-    "requestPermissions": [
+    "requestPermissions": [   //权限申请
       {
         "name": "ohos.permission.INTERNET"
       }
     ],
-    "name": "entry",
-    "type": "entry",
+    "name": "entry",   //模块名
+    "type": "entry",   //模块类型, entry:入口； feature:非入口； shared:library类型，可供其他模块引用
     "description": "$string:module_desc",
-    "mainElement": "EntryAbility",
-    "deviceTypes": [
+    "mainElement": "EntryAbility",   //一个模块内部可创建多个Ability，mainElement指定入口Ability(应用组件入口)
+    "deviceTypes": [    //设备类型
       "phone",
       "tablet"
     ],
-    "deliveryWithInstall": true,
+    "deliveryWithInstall": true,   //当前模块是否需要跟随App一起安装；entry模块必须安装(true)，feature模块可按需安装(true/false)
     "installationFree": false,
-    "pages": "$profile:main_pages",
-    "abilities": [
+    "pages": "$profile:main_pages",  //当前模块定义的页面
+    "abilities": [   //一个模块内部可创建多个Ability，都需要在这个数组中指定
       {
         "name": "EntryAbility",
         "srcEntry": "./ets/entryability/EntryAbility.ts",
         "description": "$string:EntryAbility_desc",
-        "icon": "$media:icon",
+        "icon": "$media:icon",   //当前Ability的图标，由于此处是入口EntryAbility，所以icon和label就等同于桌面app的icon和label(定义在app.json5中)
         "label": "$string:EntryAbility_label",
-        "startWindowIcon": "$media:icon",
-        "startWindowBackground": "$color:start_window_background",
+        "startWindowIcon": "$media:icon",   //应用启动时展示的图标
+        "startWindowBackground": "$color:start_window_background",   //应用启动时展示的背景色
         "exported": true,
-        "skills": [
+        "skills": [    //当前Ability的能力(和Ability跳转相关)
           {
             "entities": [
-              "entity.system.home"
+              "entity.system.home"  //"entity.system.home"：代表入口Ability
             ],
             "actions": [
               "action.system.home"
