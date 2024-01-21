@@ -5,6 +5,7 @@
     "pages/ItemPages",
     "pages/state/StatePage",
     "pages/state/ProPage",
-    "pages/AnimationPage"
+    "pages/AnimationPage",
+    "pages/AnimationPage2"
   ]
 }
