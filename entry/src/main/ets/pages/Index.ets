@@ -1,27 +1,82 @@
+import router from '@ohos.router';
+class RouterInfo{
+  // 页面路径
+  url: string
+  // 页面标题
+  title: string
+
+  constructor(url: string, title: string) {
+    this.url = url;
+    this.title = title
+  }
+}
+
 @Entry
 @Component
 struct Index {
-  //声明式UI:状态驱动页面刷新
-  @State message: string = 'Hello World'  //@State会同步修改的值渲染到页面
+  @State message: string = '页面列表'
+  private routers: RouterInfo[] = [
+    new RouterInfo('pages/ImagePage', '图片查看案例'),
+    new RouterInfo('pages/ItemPages', '商品列表案例'),
+    new RouterInfo('pages/state/StatePage', 'Jack和他的女友案例'),
+    new RouterInfo('pages/state/PropPage', '任务列表案例')
+  ]
 
-  build() {  //build()中写页面样式
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-          .fontColor('#36D')
-          .onClick(() => {
-            this.message = 'Hello ArkTs!'
-          })
+  build() {
+    Column() {
+      Text(this.message)
+        .fontSize(50)
+        .fontWeight(FontWeight.Bold)
+        .height(80)
 
-        //加载网络图片
-        Image($r('app.media.icon'))
-          .width(250)   //数值默认单位vp虚拟像素；仅指定图片宽度，高度会按照图片比例自动缩放
-          .interpolation(ImageInterpolation.High)
+      List({space: 15}){
+        ForEach(
+          this.routers,
+          (router, index) => {
+            ListItem(){
+              this.RouterItem(router, index+1)
+            }
+          }
+        )
       }
-      .width('100%')   //Column():列(纵向排列)占比100%，表示列全部填充父控件
+      .layoutWeight(1)
+      .alignListItem(ListItemAlign.Center)
+      .width('100%')
     }
-    .height('100%')  //Row():行(横向排列)占比100%，表示表示行全部填充父控件
+    .width('100%')
+    .height('100%')
+  }
+
+  @Builder
+  RouterItem(r: RouterInfo, i: number){
+    Row(){
+      Text(i + '.')
+        .fontSize(20)
+        .fontColor(Color.White)
+      Blank()
+      Text(r.title)
+        .fontSize(20)
+        .fontColor(Color.White)
+    }
+    .width('90%')
+    .padding(12)
+    .backgroundColor('#38f')
+    .borderRadius(20)
+    .shadow({radius: 6, color: '#4F000000', offsetX: 2, offsetY: 4})
+    .onClick(() => {
+      // router跳转
+      router.pushUrl(
+        {
+          url: r.url,
+          params: {id: i}
+        },
+        router.RouterMode.Single,
+        err => {
+          if(err){
+            console.log(`路由失败，errCode: ${err.code} errMsg:${err.message}`)
+          }
+        }
+      )
+    })
   }
 }

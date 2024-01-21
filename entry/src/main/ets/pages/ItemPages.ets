@@ -1,3 +1,4 @@
+import { Header } from '../componts/CommonComponts'
 class Item {
   name: string
   image: ResourceStr
@@ -27,6 +28,8 @@ struct ItemPage {
 
   build() {
     Column({ space: 8 }) {
+      // 标题部分
+      Header({title: '商品列表'})
       Row() {
         Text('商品列表')
           .fontSize(30)

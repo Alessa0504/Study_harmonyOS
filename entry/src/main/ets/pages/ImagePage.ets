@@ -1,3 +1,4 @@
+import { Header } from '../componts/CommonComponts'
 @Entry
 @Component
 struct Index {
@@ -6,6 +7,7 @@ struct Index {
 
   build() {  //build()中写页面样式
       Column() {
+        Header({title: '图片案例'})
         Row(){
           //加载网络图片
           Image($r('app.media.icon'))
